@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir PPDB 2026 - MA Ma'arif Kalikuning</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS Utama -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Custom Style Khusus Halaman PPDB agar Rapi -->
+    <style>
+        .ppdb-section {
+            padding: 120px 0 60px 0;
+            background-color: #f4f6f9;
+            min-height: 100vh;
+        }
+        .form-container {
+            background: #ffffff;
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+        }
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-header h2 {
+            color: #2e7d32;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .form-header p {
+            color: #666;
+            font-size: 14px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+            font-size: 14px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: #2e7d32;
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+            outline: none;
+        }
+        .btn-submit-ppdb {
+            width: 100%;
+            padding: 14px;
+            background-color: #d35400;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .btn-submit-ppdb:hover {
+            background-color: #b34700;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== HEADER (Sama dengan index.html) ===== -->
+<header class="header" id="header">
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <img src="assets/images/logo.png" alt="Logo" class="logo-img">
+                </div>
+                <div class="logo-text">
+                    <h1>MA Ma'arif Kalikuning</h1>
+                    <p>Madrasah Unggulan Berbasis Riset & Teknologi</p>
+                </div>
+            </a>
+            <div class="nav-menu" id="navMenu">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Beranda</a></li>
+                    <li><a href="index.html" class="nav-link active"><i class="fas fa-user-plus"></i> Pendaftaran PPDB</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- ===== FORM SECTION ===== -->
+<section class="ppdb-section">
+    <div class="container">
+        <div class="form-container">
+            <div class="form-header">
+                <h2>Formulir Pendaftaran Siswa Baru</h2>
+                <p>Silakan isi data calon siswa dengan lengkap dan benar.</p>
+            </div>
+            
+            <form id="formPPDB">
+                <div class="form-group">
+                    <label for="namaSiswa">Nama Lengkap Siswa</label>
+                    <input type="text" id="namaSiswa" class="form-control" placeholder="Contoh: Ahmad Rizki" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="emailSiswa">Alamat Email Aktif</label>
+                    <input type="email" id="emailSiswa" class="form-control" placeholder="Contoh: siswa@gmail.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="noHp">Nomor WhatsApp / HP Wali</label>
+                    <input type="tel" id="noHp" class="form-control" placeholder="Contoh: 085971889888" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="asalSekolah">Sekolah Asal (SMP/MTs)</label>
+                    <input type="text" id="asalSekolah" class="form-control" placeholder="Contoh: MTs Negeri 1" required>
+                </div>
+                 
+                <div class="form-group">
+                    <label for="alamatSiswa">Alamat Rumah Lengkap</label>
+                    <textarea id="alamatSiswa" class="form-control" rows="4" placeholder="Nama jalan, RT/RW, Kecamatan, Kabupaten" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn-submit-ppdb" id="btnKirim">
+                    <i class="fas fa-paper-plane"></i> Kirim Pendaftaran
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FIREBASE SCRIPT INTEGRATION ===== -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    // Konfigurasi Firebase kamu yang sudah terbukti terhubung
+    const firebaseConfig = {
+        apiKey: "AIzaSyDPBuFW0pc-lK_iJS7Ath2Hp4rJ5Lb-8Kw",
+        authDomain: "ma-ma-arif-kalikuning.firebaseapp.com",
+        projectId: "ma-ma-arif-kalikuning",
+        storageBucket: "ma-ma-arif-kalikuning.appspot.com",
+        messagingSenderId: "154109120016",
+        appId: "1:154109120016:web:1ae921725ce0be8848c495"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Tangkap Form PPDB
+    const form = document.getElementById('formPPDB');
+    const btnKirim = document.getElementById('btnKirim');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Ubah teks tombol saat loading kirim data
+        btnKirim.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+        btnKirim.disabled = true;
+
+        // Ambil value input form
+        const pendaftar = {
+            nama: document.getElementById('namaSiswa').value,
+            email: document.getElementById('emailSiswa').value,
+            whatsapp: document.getElementById('noHp').value,
+            asalSekolah: document.getElementById('asalSekolah').value,
+            alamat: document.getElementById('alamatSiswa').value,
+            waktuDaftar: new Date().toLocaleString("id-ID", { timeZone: "Asia/Jakarta" })
+        };
+
+        try {
+            // Simpan data pendaftar ke Firestore collection "pendaftaran_ppdb"
+            const docRef = await addDoc(collection(db, "pendaftaran_ppdb"), pendaftar);
+            console.log("Pendaftar tersimpan dengan ID:", docRef.id);
+            
+            alert("Selamat! Pendaftaran online Anda berhasil dikirim dan tersimpan.");
+            form.reset();
+        } catch (error) {
+            console.error("Error pendaftaran:", error);
+            alert("Pendaftaran gagal. Silakan periksa koneksi internet Anda.");
+        } finally {
+            // Kembalikan status tombol
+            btnKirim.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Pendaftaran';
+            btnKirim.disabled = false;
+        }
+    });
+</script>
+
+</body>
+</html>
